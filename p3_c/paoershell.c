@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
-#include <limits.h>
+#include <linux/limits.h>
 #include <unistd.h>
 
 #define DELIM								":"
@@ -20,11 +20,7 @@ void myquit();
 
 int main(){
 	char* input = NULL;
-	char* input2;
 	char *argv[50];
-	char *argv2[30];
-	char *argv3[100];
-	int i;
 
 	system("clear");
 
@@ -80,8 +76,6 @@ void myclear(){
 }
 
 void mydir(char* dir){
-	char* SPACE = " ";
-
 	if (dir != NULL){
 		char _cmd[80];
 		strcpy(_cmd, "ls -la --color=tty ");
