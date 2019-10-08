@@ -1,0 +1,43 @@
+body{
+    margin: 30px;
+}
+
+.title{
+    font-weight: 600;
+    text-align: center;
+}
+
+.inputHeading{
+    margin: 20px;
+    font-size: 25px;
+}
+
+.form-text{
+    margin: 20px;
+    height: 40px;
+}
+
+.mx-auto{
+    justify-content: center;
+}
+
+.divider{
+    border-color: #000000;  
+    border-width: 2px;
+    margin: 15px;
+}
+
+.question{
+    margin-top: 20px;
+    margin-left: 50px;
+}
+
+.noteText{
+    padding: 25px;
+}
+
+.submit{
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+  }

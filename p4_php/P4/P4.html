@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+    <html>
+
+        <head>
+            <title>P4</title>
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+            <link rel="stylesheet" type="text/css" href="P4.css">
+        </head>
+
+        <body>
+            <div class="title">
+                <h1>CMPS401 PHP QUIZ</h1>
+            </div>
+
+            <form action="./P4.php" method="post">
+                <div class="row mx-auto">
+                    <p class="inputHeading">First Name:</p>
+                    <input name="firstName" type="text" class="form-text" />
+                    <p class="inputHeading">Last Name:</p>
+                    <input name="lastName" type="text" class="form-text" />
+                </div>
+
+                <hr class="divider">
+
+                <div id="question1" class="question">
+                    <p>1. What does PHP stand for?</p>
+                    <input type="radio" name="question1" value="a"/>
+                    a) PHP: Hypertext Preprocessor
+                    
+                    <br>
+
+                    <input type="radio" name="question1" value="b"/>
+                    b) Personal Hypertext Processor
+
+                    <br>
+
+                    <input type="radio" name="question1" value="c"/>
+                    c) Private Home Page
+
+                    <br>
+
+                    <input type="radio" name="question1" value="d"/>
+                    d) Personal Home Page
+                </div>
+
+                <div id="question2" class="question">
+                        <p>2. How do you write "Hello World" in PHP</p>
+                        <input type="radio" name="question2" value="a"/>
+                        a) "Hello World";
+                        
+                        <br>
+    
+                        <input type="radio" name="question2" value="b"/>
+                        b) Document.Write("Hello World");
+    
+                        <br>
+    
+                        <input type="radio" name="question2" value="c"/>
+                        c) echo "Hello World";
+                </div>
+
+                <div id="question3" class="question">
+                        <p>3. All variables in PHP start with which symbol?</p>
+                        <input type="radio" name="question3" value="a"/>
+                        a) $
+                        
+                        <br>
+    
+                        <input type="radio" name="question3" value="b"/>
+                        b) @
+    
+                        <br>
+    
+                        <input type="radio" name="question3" value="c"/>
+                        c) %
+    
+                        <br>
+    
+                        <input type="radio" name="question3" value="d"/>
+                        d) &
+                </div>
+
+                <div id="question4" class="question">
+                        <p>4. What is the correct way to add 1 to the $count variable?</p>
+                        <input type="radio" name="question4" value="a"/>
+                        a) $count++;
+                        
+                        <br>
+    
+                        <input type="radio" name="question4" value="b"/>
+                        b) $count =+1
+    
+                        <br>
+    
+                        <input type="radio" name="question4" value="c"/>
+                        c) ++count
+    
+                        <br>
+    
+                        <input type="radio" name="question4" value="d"/>
+                        d) count++;
+                </div>
+
+                <div id="question5" class="question">
+                        <p>5. How do you get information from a form that is submitted using the "post" method?</p>
+                        <input type="radio" name="question5" value="a"/>
+                        a) Request.Form;
+                        
+                        <br>
+    
+                        <input type="radio" name="question5" value="b"/>
+                        b) $_GET[ ];
+    
+                        <br>
+    
+                        <input type="radio" name="question5" value="c"/>
+                        c) $_POST[ ];
+    
+                        <br>
+    
+                        <input type="radio" name="question5" value="d"/>
+                        d) Request.QueryString;
+                </div>
+
+                <div id="question6" class="question">
+                        <p>6. When using the POST method, variables are displayed in the URL:</p>
+                        <input type="radio" name="question6" value="a"/>
+                        a) True
+                        
+                        <br>
+    
+                        <input type="radio" name="question6" value="b"/>
+                        b) False
+                </div>
+
+                <div id="question7" class="question">
+                        <p>7. In PHP you can use both single quotes (' ') and double quotes (" ") for strings:</p>
+                        <input type="radio" name="question7" value="a"/>
+                        a) True
+                        
+                        <br>
+    
+                        <input type="radio" name="question7" value="b"/>
+                        b) False
+                </div>
+
+                <div id="question8" class="question">
+                        <p>8. What is the correct way to create a function in PHP?
+                            </p>
+                        <input type="radio" name="question8" value="a"/>
+                        a) create myFunction()
+                        
+                        <br>
+    
+                        <input type="radio" name="question8" value="b"/>
+                        b) new_function myFunction()
+    
+                        <br>
+    
+                        <input type="radio" name="question8" value="c"/>
+                        c) function myFunction()
+                </div>
+
+                <div id="question9" class="question">
+                        <p>9. What is the correct way to connect to a MySQL database?</p>
+                        <input type="radio" name="question9" value="a"/>
+                        a) mysql_connect("localhost");
+                        
+                        <br>
+    
+                        <input type="radio" name="question9" value="b"/>
+                        b) mysql_query("localhost");
+    
+                        <br>
+    
+                        <input type="radio" name="question9" value="c"/>
+                        c) connect_mysql("localhost");
+    
+                        <br>
+    
+                        <input type="radio" name="question9" value="d"/>
+                        d) mysql_open("localhost");
+                </div>
+
+                <div class="question">
+                    <p>10. The following HTML code will direct form information and control to what file?</p>
+                    <p></p>	&lt; form action="P4.php" method="post" &gt;</p>
+                    <div class="row question10Input">
+                        <input name="question10" type="text" class="form-text"/>
+                        <p class="noteText">(Note: case-sensitive)</p>
+                    </div>
+                </div>
+                
+                <hr class="divider">
+
+                <div class="submit">
+                    <button name="submit">Submit Answers</button>
+                </div>
+            </form>
+            
+            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        </body>
+
+    </html>
