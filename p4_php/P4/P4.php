@@ -116,7 +116,7 @@
 
     function logTestScore($link, $firstName, $lastName, $score, $time){
         $sql = "INSERT INTO g207 (FirstName, LastName, Score, Time)
-                VALUES ($firstName, $lastName, $score, $time)
+                VALUES ('$firstName', '$lastName', '$score', '$time')
         ";
 
         if($link->query($sql) === TRUE){
