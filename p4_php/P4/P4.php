@@ -103,8 +103,9 @@
 
         $sql = "SELECT FirstName, LastName 
                 FROM   g207 
-                WHERE  FirstName = $firstName,
-                AND    LastName = $lastName
+                WHERE  FirstName = '$firstName',
+                AND    LastName = '$lastName'
+                LIMIT 1
         ";
 
         $result = $link->query($sql);
