@@ -30,12 +30,7 @@
     echo $score . "%<br>";
     echo $time . "<br>";
 
-    //logTestScore($link, $firstName, $lastName, $score, $time);
-    $takenBefore = checkIfTakenBefore($link, $firstName, $lastName);
-
-    if($takenBefore){
-        echo "test taken before";
-    }
+    logTestScore($link, $firstName, $lastName, $score, $time);
 
     function checkAnswers($score){
         $question1 = $_POST["question1"];
@@ -130,12 +125,26 @@
     }
 
     function logTestScore($link, $firstName, $lastName, $score, $time){
-        $sql = "INSERT INTO g207 (FirstName, LastName, Score, Time)
-                VALUES ('$firstName', '$lastName', '$score', '$time')
-        ";
+        $sql;
+        $takenBefore = checkIfTakenBefore($link, $firstName, $lastName);
 
-        if($link->query($sql) === TRUE){
-            echo "New record created successfully <br>";
+        if($takenBefore){
+            echo "test taken before";
+            $sql = "UPDATE g207 
+                    SET Score = '$score', 
+                        Time = '$time' 
+                    WHERE FirstName = '$firstName' 
+                    AND   LastName = '$lastName'
+            ";
+        }
+        else {
+            $sql = "INSERT INTO g207 (FirstName, LastName, Score, Time)
+                    VALUES ('$firstName', '$lastName', '$score', '$time')
+            ";
+        }
+
+        if(mysqli_query($link, $sql) === TRUE){
+            echo "successfully <br>";
         }
         else{
             echo "Error: " . $sql . "<br>" . $link->error;
