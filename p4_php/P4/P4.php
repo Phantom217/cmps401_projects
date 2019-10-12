@@ -104,7 +104,7 @@
         $sql = "SELECT FirstName, LastName 
                 FROM   g207 
                 WHERE  FirstName = '$firstName',
-                AND    LastName = '$lastName'
+                AND    LastName = '$lastName',
                 LIMIT 1
         ";
 
