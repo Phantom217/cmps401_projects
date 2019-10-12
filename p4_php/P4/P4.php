@@ -104,8 +104,7 @@
         $sql = "SELECT FirstName, LastName 
                 FROM   g207 
                 WHERE  FirstName = '$firstName',
-                AND    LastName = '$lastName',
-                LIMIT 1
+                AND    LastName = '$lastName'
         ";
 
         $result = mysqli_query($link, $sql);
