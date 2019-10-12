@@ -31,7 +31,11 @@
     echo $time . "<br>";
 
     //logTestScore($link, $firstName, $lastName, $score, $time);
-    checkIfTakenBefore($link, $firstName, $lastName);
+    $takenBefore = checkIfTakenBefore($link, $firstName, $lastName);
+
+    if($takenBefore){
+        echo "test taken before";
+    }
 
     function checkAnswers($score){
         $question1 = $_POST["question1"];
@@ -100,7 +104,7 @@
 
     function checkIfTakenBefore($link, $firstName, $lastName){
         echo "<br> here in side checkIfTakenBefore <br>";
-
+        $takenBefore = false;
         $sql = "SELECT FirstName, LastName 
                 FROM   g207 
                 WHERE  FirstName = '$firstName'
@@ -111,13 +115,18 @@
         $result = mysqli_query($link, $sql);
 
         if(mysqli_num_rows($result) > 0){
-            while($row = mysqli_fetch_assoc($result)) {
-                echo "Name: " . $row["FirstName"]. " " . $row["LastName"] . "<br>";
-             }
+            $row = mysqli_fetch_assoc($result);
+            
+            if($row["FirstName"] == $firstName && $row["LastName"] == $lastName){
+                echo "Name exists";
+                $takenBefore = true;
+            }
         }
         else{
             echo $link->error;
         }
+
+        return $takenBefore;
     }
 
     function logTestScore($link, $firstName, $lastName, $score, $time){
