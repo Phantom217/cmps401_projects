@@ -30,7 +30,8 @@
     echo $score . "%<br>";
     echo $time . "<br>";
 
-    logTestScore($link, $firstName, $lastName, $score, $time);
+    //logTestScore($link, $firstName, $lastName, $score, $time);
+    checkIfTakenBefore($link, $firstName, $lastName);
 
     function checkAnswers($score){
         $question1 = $_POST["question1"];
