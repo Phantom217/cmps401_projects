@@ -108,12 +108,12 @@
                 LIMIT 1
         ";
 
-        $result = $link->query($sql);
+        $result = mysqli_query($link, $sql);
 
-        if($result->num_rows > 0){
-            $row = $result->fetch_assoc();
-
-            echo "firstName = " . $row['FirstName'] . " lastName = " . $row['LastName'];
+        if(mysqli_num_rows($result) > 0){
+            while($row = mysqli_fetch_assoc($result)) {
+                echo "Name: " . $row["FirstName"]. " " . $row["LastName"] . "<br>";
+             }
         }
         else{
             echo $link->error;
