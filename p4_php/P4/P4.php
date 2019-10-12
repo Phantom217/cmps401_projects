@@ -23,7 +23,7 @@
     echo $fullName . "<br>";
 
     $score = checkAnswers(0);
-    $time = date("l m/d/Y h:i:sa");
+    $time = date("m/d/Y h:i:s");
 
     $score = getPercentage($score);
     
