@@ -30,7 +30,7 @@
     echo $score . "%<br>";
     echo $time . "<br>";
 
-    logTestScore($firstName, $lastName, $score, $time);
+    logTestScore($link, $firstName, $lastName, $score, $time);
 
     function checkAnswers($score){
         $question1 = $_POST["question1"];
@@ -114,7 +114,7 @@
         }
     }
 
-    function logTestScore($link){
+    function logTestScore($link, $firstName, $lastName, $score, $time){
         $sql = "INSERT INTO g207 (FirstName, LastName, Score, Time)
                 VALUES ($firstName, $lastName, $score, $time)
         ";
