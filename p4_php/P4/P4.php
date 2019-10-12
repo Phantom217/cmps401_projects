@@ -99,7 +99,7 @@
     }
 
     function checkIfTakenBefore($link, $firstName, $lastName){
-        echo "<br> here in side checkIfTakenBefore";
+        echo "<br> here in side checkIfTakenBefore <br>";
 
         $sql = "SELECT FirstName, LastName 
                 FROM   g207 
@@ -116,7 +116,7 @@
             echo "firstName = " . $row['FirstName'] . " lastName = " . $row['LastName'];
         }
         else{
-            echo "Nothing was retunred ";
+            echo $link->error;
         }
     }
 
