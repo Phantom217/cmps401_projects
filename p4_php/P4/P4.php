@@ -17,16 +17,6 @@
     if(isset($_POST['submit'])){
         $firstName = $_POST["firstName"];
         $lastName = $_POST["lastName"];
-        $question1 = $_POST["question1"];
-        $question2 = $_POST["question2"];
-        $question3 = $_POST["question3"];
-        $question4 = $_POST["question4"];
-        $question5 = $_POST["question5"];
-        $question6 = $_POST["question6"];
-        $question7 = $_POST["question7"];
-        $question8 = $_POST["question8"];
-        $question9 = $_POST["question9"];
-        $question10 = $_POST["question10"];
     }
     $fullName = $firstName . " " . $lastName;
 
@@ -40,7 +30,20 @@
     echo $score . "%<br>";
     echo $time . "<br>";
 
+    logTestScore($firstName, $lastName, $score, $time);
+
     function checkAnswers($score){
+        $question1 = $_POST["question1"];
+        $question2 = $_POST["question2"];
+        $question3 = $_POST["question3"];
+        $question4 = $_POST["question4"];
+        $question5 = $_POST["question5"];
+        $question6 = $_POST["question6"];
+        $question7 = $_POST["question7"];
+        $question8 = $_POST["question8"];
+        $question9 = $_POST["question9"];
+        $question10 = $_POST["question10"];
+
         echo $question1 . "<br>";
         echo $question2 . "<br>";
         echo $question3 . "<br>";
@@ -94,7 +97,7 @@
         return $percentage;
     }
 
-    function checkIfTakenBefore($link){
+    function checkIfTakenBefore($link, $firstName, $lastName){
         $sql = "SELECT FirstName, LastName 
                 FROM   g207 
                 WHERE  FirstName = $firstName,
@@ -111,9 +114,18 @@
         }
     }
 
-    // function logTestScore($link){
-        
-    // }
+    function logTestScore($link){
+        $sql = "INSERT INTO g207 (FirstName, LastName, Score, Time)
+                VALUES ($firstName, $lastName, $score, $time)
+        ";
+
+        if($link->query($sql) === TRUE){
+            echo "New record created successfully <br>";
+        }
+        else{
+            echo "Error: " . $sql . "<br>" . $link->error;
+        }
+    }
 
     mysqli_close($link);
 ?>
