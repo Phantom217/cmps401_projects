@@ -92,7 +92,6 @@
         $takenBefore = checkIfTakenBefore($link, $firstName, $lastName);
 
         if($takenBefore){
-            echo "test taken before";
             $sql = "UPDATE g207 
                     SET Score = '$score', 
                         Time = '$time' 
