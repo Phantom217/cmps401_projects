@@ -12,6 +12,8 @@
     echo "Success: A proper connection to MySQL was made! The my_db database is great." . PHP_EOL;
     echo "Host information: " . mysqli_get_host_info($link) . PHP_EOL;
 
+    createTable($link);
+
     date_default_timezone_set('America/Chicago'); //Set timezone
     //From variable declartions 
     if(isset($_POST['submit'])){
@@ -93,6 +95,24 @@
         $percentage = ($score * 100) / $total;
 
         return $percentage;
+    }
+
+    function createTable($link){
+        $sql = "
+            CREATE TABLE IF NOT EXISTS g207 (
+                FirstName VARCHAR(30) NOT NULL,
+                LastName  VARCHAR(30) NOT NULL,
+                Score     INT(100),
+                Time      DATE
+            )
+        ";
+
+        if($link->query($link, $sql)){
+            echo "Table g207 created successfully";
+        }
+        else{
+            echo "Error creating table: " . mysqli_error($link);
+        }
     }
 
     mysqli_close($link);
