@@ -1,0 +1,522 @@
+<doctype html>
+    <html>
+     <body>
+        <!-- Title --> 
+        <h1>Blackjack</h1><br>
+         Cards:
+         <div id="dealer-cards"></div>
+         <br>
+         <div id="player-cards"></div>
+         <br>
+         <!-- New Game Button -->
+         <input type='button' id='new-game-button' value='New Game' onclick='newGame();'/>
+         <!-- Hit Button -->
+         <input type='button' id='hit-button' value='Hit' onclick='hit();'/>
+         <!-- Stand Button -->
+         <input type='button' id='stand-button' value='Stand' onclick='stand();'/>
+         <br>
+         <br>
+         <!-- Score -->
+         Score:
+         <div id="player-score"></div>
+         <div id="dealer-score"></div>
+         <br>
+         <h2 id="message-board"></h2>
+         <script>
+            var numCardsPulled = 0;
+
+            // Variable that stores the player's hand
+            var player = {
+                cards: [],
+                hand: [],
+                score: 0
+            };
+
+            // Variable that stores the dealer's hand
+            var dealer = {
+                cards: [],
+                hand: [],
+                score: 0
+            };
+
+            document.getElementById("hit-button").disabled = true; // Disable the hit button by default
+            document.getElementById("stand-button").disabled = true; // Disable the stand button by default
+
+            // Function that retrieves the value of each card
+            function getCardsValue(a) {
+                var cardArray = [],
+                sum = 0,
+                i = 0,
+                aceCount = 0;
+                cardArray = a;
+                for (i; i < cardArray.length; i += 1) {
+                    if (cardArray[i].rank === "J" || cardArray[i].rank === "Q" || cardArray[i].rank === "K") {
+                        sum += 10;
+                    } 
+                    else if (cardArray[i].rank === "A") {
+                        sum += 11;
+                        aceCount += 1;
+                    } 
+                    else {
+                        sum += cardArray[i].rank;
+                    }
+                }
+                while (aceCount > 0 && sum > 21) {
+                    sum -= 10;
+                    aceCount -= 1;
+                }
+                return sum;
+            }
+
+// Variable that holds the deck
+var deck = {
+        deckArray: [],
+        initialize: function () {
+            var suitArray, rankArray, s, r;
+            suitArray = ["clubs", "diamonds", "hearts", "spades"];
+            rankArray = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"];
+            for (s = 0; s < suitArray.length; s += 1) {
+                for (r = 0; r < rankArray.length; r += 1) {
+                    this.deckArray[s * 13 + r] = {
+                        rank: rankArray[r],
+                        suit: suitArray[s]
+
+                    };
+                }
+            }
+        },
+        shuffle: function () {
+            var temp, i, rnd;
+            for (i = 0; i < this.deckArray.length; i += 1) {
+                rnd = Math.floor(Math.random() * this.deckArray.length);
+                temp = this.deckArray[i];
+                this.deckArray[i] = this.deckArray[rnd];
+                this.deckArray[rnd] = temp;
+            }
+        }
+    };
+
+deck.initialize();
+deck.shuffle();
+
+// Function that resets the game
+function resetGame() {
+    numCardsPulled = 0;
+    player.cards = [];
+    player.hand = [];
+    dealer.cards = [];
+    dealer.hand = [];
+    player.score = 0;
+    dealer.score = 0;
+    deck.initialize();
+    deck.shuffle();
+    document.getElementById("hit-button").disabled = true;
+    document.getElementById("stand-button").disabled = true;
+    document.getElementById("new-game-button").disabled = false;
+}
+
+// Function that determines how the game ends
+function endGame() {
+    if (player.score === 21) {
+        document.getElementById("message-board").innerHTML = "You win! You got blackjack." + "<br>" + "click New Game to play again";
+        resetGame();
+    }
+    if (player.score > 21) {
+        document.getElementById("message-board").innerHTML = "You went over 21! The dealer wins" + "<br>" + "click New Game to play again";
+        resetGame();
+    }
+    if (dealer.score === 21) {
+        document.getElementById("message-board").innerHTML = "You lost. Dealer got blackjack" + "<br>" + "click New Game to play again";
+        resetGame();
+    }
+    if (dealer.score > 21) {
+        document.getElementById("message-board").innerHTML = "Dealer went over 21! You win!" + "<br>" + "click New Game to play again";
+        resetGame();
+    }
+    if (dealer.score >= 17 && player.score > dealer.score && player.score < 21) {
+        document.getElementById("message-board").innerHTML = "You win! You beat the dealer." + "<br>" + "click New Game to play again";
+        resetGame();
+    }
+    if (dealer.score >= 17 && player.score < dealer.score && dealer.score < 21) {
+        document.getElementById("message-board").innerHTML = "You lost. Dealer had the higher score." + "<br>" + "click New Game to play again";
+        resetGame();
+    }
+    if (dealer.score >= 17 && player.score === dealer.score && dealer.score < 21) {
+        document.getElementById("message-board").innerHTML = "You tied! " + "<br>" + "click New Game to play again";
+        resetGame();
+    }
+}
+
+// Function where the dealer will draw
+function dealerDraw() {
+    
+    dealer.cards.push(deck.deckArray[numCardsPulled]);
+    dealer.score = getCardsValue(dealer.cards);
+    document.getElementById("dealer-cards").innerHTML = "Dealer Cards: " + getDealerCardUI(dealer.cards);
+    document.getElementById("dealer-score").innerHTML = "Dealer Score: " + dealer.score;
+    numCardsPulled += 1;
+}
+
+// Function that starts a new game
+function newGame() {
+    document.getElementById("new-game-button").disabled = true;
+    document.getElementById("hit-button").disabled = false;
+    document.getElementById("stand-button").disabled = false;
+    document.getElementById("message-board").innerHTML = "";
+    hit();
+    hit();
+    dealerDraw();
+    endGame();
+}
+
+// Function that handles the hit button
+function hit() {
+    player.cards.push(deck.deckArray[numCardsPulled]);
+    player.score = getCardsValue(player.cards);
+    document.getElementById("player-cards").innerHTML = "Player Cards: " + getPlayerCardUI(player.cards);
+    document.getElementById("player-score").innerHTML = "Player Score: " + player.score;
+    numCardsPulled += 1;
+    if (numCardsPulled > 2) {
+        endGame();
+    }
+}
+
+// Function that gets the pictures of the player's hand
+function getPlayerCardUI(playerCards) {
+    var i = 0;
+    for (i; i < playerCards.length; i++) {
+        if (playerCards[i].rank == 2 && playerCards[i].suit == "clubs") {
+            player.hand[i] = "<img src=\"./cards/2c.png\">"
+        }
+        else if (playerCards[i].rank == 2 && playerCards[i].suit == "diamonds") {
+            player.hand[i] = "<img src=\"./cards/2d.png\">"
+        }
+        else if (playerCards[i].rank == 2 && playerCards[i].suit == "hearts") {
+            player.hand[i] = "<img src=\"./cards/2h.png\">"
+        }
+        else if (playerCards[i].rank == 2 && playerCards[i].suit == "spades") {
+            player.hand[i] = "<img src=\"./cards/2s.png\">"
+        }
+        else if (playerCards[i].rank == 3 && playerCards[i].suit == "clubs") {
+            player.hand[i] = "<img src=\"./cards/3c.png\">"
+        }
+        else if (playerCards[i].rank == 3 && playerCards[i].suit == "diamonds") {
+            player.hand[i] = "<img src=\"./cards/3d.png\">"
+        }
+        else if (playerCards[i].rank == 3 && playerCards[i].suit == "hearts") {
+            player.hand[i] = "<img src=\"./cards/3h.png\">"
+        }
+        else if (playerCards[i].rank == 3 && playerCards[i].suit == "spades") {
+            player.hand[i] = "<img src=\"./cards/3s.png\">"
+        }
+        else if (playerCards[i].rank == 4 && playerCards[i].suit == "clubs") {
+            player.hand[i] = "<img src=\"./cards/4c.png\">"
+        }
+        else if (playerCards[i].rank == 4 && playerCards[i].suit == "diamonds") {
+            player.hand[i] = "<img src=\"./cards/4d.png\">"
+        }
+        else if (playerCards[i].rank == 4 && playerCards[i].suit == "hearts") {
+            player.hand[i] = "<img src=\"./cards/4h.png\">"
+        }
+        else if (playerCards[i].rank == 4 && playerCards[i].suit == "spades") {
+            player.hand[i] = "<img src=\"./cards/4s.png\">"
+        }
+        else if (playerCards[i].rank == 5 && playerCards[i].suit == "clubs") {
+            player.hand[i] = "<img src=\"./cards/5c.png\">"
+        }
+        else if (playerCards[i].rank == 5 && playerCards[i].suit == "diamonds") {
+            player.hand[i] = "<img src=\"./cards/5d.png\">"
+        }
+        else if (playerCards[i].rank == 5 && playerCards[i].suit == "hearts") {
+            player.hand[i] = "<img src=\"./cards/5h.png\">"
+        }
+        else if (playerCards[i].rank == 5 && playerCards[i].suit == "spades") {
+            player.hand[i] = "<img src=\"./cards/5s.png\">"
+        }
+        else if (playerCards[i].rank == 6 && playerCards[i].suit == "clubs") {
+            player.hand[i] = "<img src=\"./cards/6c.png\">"
+        }
+        else if (playerCards[i].rank == 6 && playerCards[i].suit == "diamonds") {
+            player.hand[i] = "<img src=\"./cards/6d.png\">"
+        }
+        else if (playerCards[i].rank == 6 && playerCards[i].suit == "hearts") {
+            player.hand[i] = "<img src=\"./cards/6h.png\">"
+        }
+        else if (playerCards[i].rank == 6 && playerCards[i].suit == "spades") {
+            player.hand[i] = "<img src=\"./cards/6s.png\">"
+        }
+        else if (playerCards[i].rank == 7 && playerCards[i].suit == "clubs") {
+            player.hand[i] = "<img src=\"./cards/7c.png\">"
+        }
+        else if (playerCards[i].rank == 7 && playerCards[i].suit == "diamonds") {
+            player.hand[i] = "<img src=\"./cards/7d.png\">"
+        }
+        else if (playerCards[i].rank == 7 && playerCards[i].suit == "hearts") {
+            player.hand[i] = "<img src=\"./cards/7h.png\">"
+        }
+        else if (playerCards[i].rank == 7 && playerCards[i].suit == "spades") {
+            player.hand[i] = "<img src=\"./cards/7s.png\">"
+        }
+        else if (playerCards[i].rank == 8 && playerCards[i].suit == "clubs") {
+            player.hand[i] = "<img src=\"./cards/8c.png\">"
+        }
+        else if (playerCards[i].rank == 8 && playerCards[i].suit == "diamonds") {
+            player.hand[i] = "<img src=\"./cards/8d.png\">"
+        }
+        else if (playerCards[i].rank == 8 && playerCards[i].suit == "hearts") {
+            player.hand[i] = "<img src=\"./cards/8h.png\">"
+        }
+        else if (playerCards[i].rank == 8 && playerCards[i].suit == "spades") {
+            player.hand[i] = "<img src=\"./cards/8s.png\">"
+        }
+        else if (playerCards[i].rank == 9 && playerCards[i].suit == "clubs") {
+            player.hand[i] = "<img src=\"./cards/9c.png\">"
+        }
+        else if (playerCards[i].rank == 9 && playerCards[i].suit == "diamonds") {
+            player.hand[i] = "<img src=\"./cards/9d.png\">"
+        }
+        else if (playerCards[i].rank == 9 && playerCards[i].suit == "hearts") {
+            player.hand[i] = "<img src=\"./cards/9h.png\">"
+        }
+        else if (playerCards[i].rank == 9 && playerCards[i].suit == "spades") {
+            player.hand[i] = "<img src=\"./cards/9s.png\">"
+        }
+        else if (playerCards[i].rank == 10 && playerCards[i].suit == "clubs") {
+            player.hand[i] = "<img src=\"./cards/10c.png\">"
+        }
+        else if (playerCards[i].rank == 10 && playerCards[i].suit == "diamonds") {
+            player.hand[i] = "<img src=\"./cards/10d.png\">"
+        }
+        else if (playerCards[i].rank == 10 && playerCards[i].suit == "hearts") {
+            player.hand[i] = "<img src=\"./cards/10h.png\">"
+        }
+        else if (playerCards[i].rank == 10 && playerCards[i].suit == "spades") {
+            player.hand[i] = "<img src=\"./cards/10s.png\">"
+        }
+        else if (playerCards[i].rank == "A" && playerCards[i].suit == "clubs") {
+            player.hand[i] = "<img src=\"./cards/ac.png\">"
+        }
+        else if (playerCards[i].rank == "A" && playerCards[i].suit == "diamonds") {
+            player.hand[i] = "<img src=\"./cards/ad.png\">"
+        }
+        else if (playerCards[i].rank == "A" && playerCards[i].suit == "hearts") {
+            player.hand[i] = "<img src=\"./cards/ah.png\">"
+        }
+        else if (playerCards[i].rank == "A" && playerCards[i].suit == "spades") {
+            player.hand[i] = "<img src=\"./cards/as.png\">"
+        }
+        else if (playerCards[i].rank == "J" && playerCards[i].suit == "clubs") {
+            player.hand[i] = "<img src=\"./cards/jc.png\">"
+        }
+        else if (playerCards[i].rank == "J" && playerCards[i].suit == "diamonds") {
+            player.hand[i] = "<img src=\"./cards/jd.png\">"
+        }
+        else if (playerCards[i].rank == "J" && playerCards[i].suit == "hearts") {
+            player.hand[i] = "<img src=\"./cards/jh.png\">"
+        }
+        else if (playerCards[i].rank == "J" && playerCards[i].suit == "spades") {
+            player.hand[i] = "<img src=\"./cards/js.png\">"
+        }
+        else if (playerCards[i].rank == "K" && playerCards[i].suit == "clubs") {
+            player.hand[i] = "<img src=\"./cards/kc.png\">"
+        }
+        else if (playerCards[i].rank == "K" && playerCards[i].suit == "diamonds") {
+            player.hand[i] = "<img src=\"./cards/kd.png\">"
+        }
+        else if (playerCards[i].rank == "K" && playerCards[i].suit == "hearts") {
+            player.hand[i] = "<img src=\"./cards/kh.png\">"
+        }
+        else if (playerCards[i].rank == "K" && playerCards[i].suit == "spades") {
+            player.hand[i] = "<img src=\"./cards/ks.png\">"
+        }
+        else if (playerCards[i].rank == "Q" && playerCards[i].suit == "clubs") {
+            player.hand[i] = "<img src=\"./cards/qc.png\">"
+        }
+        else if (playerCards[i].rank == "Q" && playerCards[i].suit == "diamonds") {
+            player.hand[i] = "<img src=\"./cards/qd.png\">"
+        }
+        else if (playerCards[i].rank == "Q" && playerCards[i].suit == "hearts") {
+            player.hand[i] = "<img src=\"./cards/qh.png\">"
+        }
+        else if (playerCards[i].rank == "Q" && playerCards[i].suit == "spades") {
+            player.hand[i] = "<img src=\"./cards/qs.png\">"
+        }
+    }
+    return player.hand;
+}
+
+// Function that gets the pictures of the dealer's hand
+function getDealerCardUI(dealerCards) {
+    var i = 0; 
+    for (i; i < dealerCards.length; i++) {
+        if (dealerCards[i].rank == 2 && dealerCards[i].suit == "clubs") {
+            dealer.hand[i] = "<img src=\"./cards/2c.png\">"
+        }
+        else if (dealerCards[i].rank == 2 && dealerCards[i].suit == "diamonds") {
+            dealer.hand[i] = "<img src=\"./cards/2d.png\">"
+        }
+        else if (dealerCards[i].rank == 2 && dealerCards[i].suit == "hearts") {
+            dealer.hand[i] = "<img src=\"./cards/2h.png\">"
+        }
+        else if (dealerCards[i].rank == 2 && dealerCards[i].suit == "spades") {
+            dealer.hand[i] = "<img src=\"./cards/2s.png\">"
+        }
+        else if (dealerCards[i].rank == 3 && dealerCards[i].suit == "clubs") {
+            dealer.hand[i] = "<img src=\"./cards/3c.png\">"
+        }
+        else if (dealerCards[i].rank == 3 && dealerCards[i].suit == "diamonds") {
+            dealer.hand[i] = "<img src=\"./cards/3d.png\">"
+        }
+        else if (dealerCards[i].rank == 3 && dealerCards[i].suit == "hearts") {
+            dealer.hand[i] = "<img src=\"./cards/3h.png\">"
+        }
+        else if (dealerCards[i].rank == 3 && dealerCards[i].suit == "spades") {
+            dealer.hand[i] = "<img src=\"./cards/3s.png\">"
+        }
+        else if (dealerCards[i].rank == 4 && dealerCards[i].suit == "clubs") {
+            dealer.hand[i] = "<img src=\"./cards/4c.png\">"
+        }
+        else if (dealerCards[i].rank == 4 && dealerCards[i].suit == "diamonds") {
+            dealer.hand[i] = "<img src=\"./cards/4d.png\">"
+        }
+        else if (dealerCards[i].rank == 4 && dealerCards[i].suit == "hearts") {
+            dealer.hand[i] = "<img src=\"./cards/4h.png\">"
+        }
+        else if (dealerCards[i].rank == 4 && dealerCards[i].suit == "spades") {
+            dealer.hand[i] = "<img src=\"./cards/4s.png\">"
+        }
+        else if (dealerCards[i].rank == 5 && dealerCards[i].suit == "clubs") {
+            dealer.hand[i] = "<img src=\"./cards/5c.png\">"
+        }
+        else if (dealerCards[i].rank == 5 && dealerCards[i].suit == "diamonds") {
+            dealer.hand[i] = "<img src=\"./cards/5d.png\">"
+        }
+        else if (dealerCards[i].rank == 5 && dealerCards[i].suit == "hearts") {
+            dealer.hand[i] = "<img src=\"./cards/5h.png\">"
+        }
+        else if (dealerCards[i].rank == 5 && dealerCards[i].suit == "spades") {
+            dealer.hand[i] = "<img src=\"./cards/5s.png\">"
+        }
+        else if (dealerCards[i].rank == 6 && dealerCards[i].suit == "clubs") {
+            dealer.hand[i] = "<img src=\"./cards/6c.png\">"
+        }
+        else if (dealerCards[i].rank == 6 && dealerCards[i].suit == "diamonds") {
+            dealer.hand[i] = "<img src=\"./cards/6d.png\">"
+        }
+        else if (dealerCards[i].rank == 6 && dealerCards[i].suit == "hearts") {
+            dealer.hand[i] = "<img src=\"./cards/6h.png\">"
+        }
+        else if (dealerCards[i].rank == 6 && dealerCards[i].suit == "spades") {
+            dealer.hand[i] = "<img src=\"./cards/6s.png\">"
+        }
+        else if (dealerCards[i].rank == 7 && dealerCards[i].suit == "clubs") {
+            dealer.hand[i] = "<img src=\"./cards/7c.png\">"
+        }
+        else if (dealerCards[i].rank == 7 && dealerCards[i].suit == "diamonds") {
+            dealer.hand[i] = "<img src=\"./cards/7d.png\">"
+        }
+        else if (dealerCards[i].rank == 7 && dealerCards[i].suit == "hearts") {
+            dealer.hand[i] = "<img src=\"./cards/7h.png\">"
+        }
+        else if (dealerCards[i].rank == 7 && dealerCards[i].suit == "spades") {
+            dealer.hand[i] = "<img src=\"./cards/7s.png\">"
+        }
+        else if (dealerCards[i].rank == 8 && dealerCards[i].suit == "clubs") {
+            dealer.hand[i] = "<img src=\"./cards/8c.png\">"
+        }
+        else if (dealerCards[i].rank == 8 && dealerCards[i].suit == "diamonds") {
+            dealer.hand[i] = "<img src=\"./cards/8d.png\">"
+        }
+        else if (dealerCards[i].rank == 8 && dealerCards[i].suit == "hearts") {
+            dealer.hand[i] = "<img src=\"./cards/8h.png\">"
+        }
+        else if (dealerCards[i].rank == 8 && dealerCards[i].suit == "spades") {
+            dealer.hand[i] = "<img src=\"./cards/8s.png\">"
+        }
+        else if (dealerCards[i].rank == 9 && dealerCards[i].suit == "clubs") {
+            dealer.hand[i] = "<img src=\"./cards/9c.png\">"
+        }
+        else if (dealerCards[i].rank == 9 && dealerCards[i].suit == "diamonds") {
+            dealer.hand[i] = "<img src=\"./cards/9d.png\">"
+        }
+        else if (dealerCards[i].rank == 9 && dealerCards[i].suit == "hearts") {
+            dealer.hand[i] = "<img src=\"./cards/9h.png\">"
+        }
+        else if (dealerCards[i].rank == 9 && dealerCards[i].suit == "spades") {
+            dealer.hand[i] = "<img src=\"./cards/9s.png\">"
+        }
+        else if (dealerCards[i].rank == 10 && dealerCards[i].suit == "clubs") {
+            dealer.hand[i] = "<img src=\"./cards/10c.png\">"
+        }
+        else if (dealerCards[i].rank == 10 && dealerCards[i].suit == "diamonds") {
+            dealer.hand[i] = "<img src=\"./cards/10d.png\">"
+        }
+        else if (dealerCards[i].rank == 10 && dealerCards[i].suit == "hearts") {
+            dealer.hand[i] = "<img src=\"./cards/10h.png\">"
+        }
+        else if (dealerCards[i].rank == 10 && dealerCards[i].suit == "spades") {
+            dealer.hand[i] = "<img src=\"./cards/10s.png\">"
+        }
+        else if (dealerCards[i].rank == "A" && dealerCards[i].suit == "clubs") {
+            dealer.hand[i] = "<img src=\"./cards/ac.png\">"
+        }
+        else if (dealerCards[i].rank == "A" && dealerCards[i].suit == "diamonds") {
+            dealer.hand[i] = "<img src=\"./cards/ad.png\">"
+        }
+        else if (dealerCards[i].rank == "A" && dealerCards[i].suit == "hearts") {
+            dealer.hand[i] = "<img src=\"./cards/ah.png\">"
+        }
+        else if (dealerCards[i].rank == "A" && dealerCards[i].suit == "spades") {
+            dealer.hand[i] = "<img src=\"./cards/as.png\">"
+        }
+        else if (dealerCards[i].rank == "J" && dealerCards[i].suit == "clubs") {
+            dealer.hand[i] = "<img src=\"./cards/jc.png\">"
+        }
+        else if (dealerCards[i].rank == "J" && dealerCards[i].suit == "diamonds") {
+            dealer.hand[i] = "<img src=\"./cards/jd.png\">"
+        }
+        else if (dealerCards[i].rank == "J" && dealerCards[i].suit == "hearts") {
+            dealer.hand[i] = "<img src=\"./cards/jh.png\">"
+        }
+        else if (dealerCards[i].rank == "J" && dealerCards[i].suit == "spades") {
+            dealer.hand[i] = "<img src=\"./cards/js.png\">"
+        }
+        else if (dealerCards[i].rank == "K" && dealerCards[i].suit == "clubs") {
+            dealer.hand[i] = "<img src=\"./cards/kc.png\">"
+        }
+        else if (dealerCards[i].rank == "K" && dealerCards[i].suit == "diamonds") {
+            dealer.hand[i] = "<img src=\"./cards/kd.png\">"
+        }
+        else if (dealerCards[i].rank == "K" && dealerCards[i].suit == "hearts") {
+            dealer.hand[i] = "<img src=\"./cards/kh.png\">"
+        }
+        else if (dealerCards[i].rank == "K" && dealerCards[i].suit == "spades") {
+            dealer.hand[i] = "<img src=\"./cards/ks.png\">"
+        }
+        else if (dealerCards[i].rank == "Q" && dealerCards[i].suit == "clubs") {
+            dealer.hand[i] = "<img src=\"./cards/qc.png\">"
+        }
+        else if (dealerCards[i].rank == "Q" && dealerCards[i].suit == "diamonds") {
+            dealer.hand[i] = "<img src=\"./cards/qd.png\">"
+        }
+        else if (dealerCards[i].rank == "Q" && dealerCards[i].suit == "hearts") {
+            dealer.hand[i] = "<img src=\"./cards/qh.png\">"
+        }
+        else if (dealerCards[i].rank == "Q" && dealerCards[i].suit == "spades") {
+            dealer.hand[i] = "<img src=\"./cards/qs.png\">"
+        }
+    }
+    return dealer.hand;
+}
+
+// Function that handles the stand button
+function stand() {
+    while (dealer.score < 17) {
+        dealerDraw();
+    }
+    endGame();
+}
+         </script>
+    </body>
+       
+    </html>
