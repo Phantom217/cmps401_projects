@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <title>JavaScript Test Random</title>
+    </head>
+    <body >
+        <script language = "javascript">
+            // Guess a number 0-9
+            // Program-ID:  TRandom.html
+            // Author:      Kuo-pao Yang
+
+            var num = Math.floor(Math.random()*10)
+
+            function guessNum() {
+                var guess = document.forms["guessForm"]["num"].value
+                if (guess == num)
+                    window.alert("Correct! num = " + num)
+                else if (guess < num)
+                    window.alert("Your guess is too low! num = " + num)
+                else window.alert("Your guess is too high! num = " + num)
+            }
+        </script>
+        <form name="guessForm">
+            Enter a guess number (0-9): <br/>
+            <input type="text" name="num"><br/>
+            <button onClick="guessNum()"> Guess </button>
+        </form>
+    </body>
+</html>

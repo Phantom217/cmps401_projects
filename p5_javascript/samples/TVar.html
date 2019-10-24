@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <title>JavaScript Test Variables</title>
+    </head>
+    <body>
+        <script type="text/javascript">
+            // Test variables: JavaScript ALL local variables "var"
+            // Program-ID:  TVar.html
+            // Author:      Tyler Oalman
+            var i1 = 1,     i2 = 2
+            var f1 = 3.3,   f2 = 4.4
+            var c = 'a',    s = 'bcd'
+            f1 = i1
+            i2 = f2
+            c = c + s + " " + "efg"
+            s = i1
+            document.write("i1 = " + i1 + "<br/>")
+            document.write("i2 = " + i2 + "<br/>")
+            document.write("f1 = " + f1 + "<br/>")
+            document.write("f2 = " + f2 + "<br/>")
+            document.write("c  = " + c  + "<br/>")
+            document.write("s  = " + s  + "<br/>")
+            /* Output:
+                i1 = 1
+                i2 = 4.4
+                f1 = 1
+                f2 = 4.4
+                c  = abcd efg
+                s  = 1
+            */
+        </script>
+    </body>
+</html>

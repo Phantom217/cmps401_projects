@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <title>JavaScript Test Subprograms</title>
+    </head>
+    <body>
+        <script type="text/javascript">
+            // Test Subprograms
+            // Program-ID:  TSub.html
+            // Author:      Kuo-pao Yang
+
+            //Test call by value
+            document.write("Test Call by Value<br/>")
+            var m = 1
+            func1(m)
+            document.write("m = " + m + "<br/>")
+            var n = func2(m)
+            document.write("n = " + n + "<br/>")
+
+            //Test Array to Subprograms
+            document.write("Test Array to Subprograms<br/>")
+            var a = new Array(10, 20, 30)
+            func3(a[1], a)
+            for(var i = 0; i < 3; i++) {
+                document.write("a["+i+"] = " + a[i] + " ")
+            }
+            document.write("<br/>")
+            b = func4(a[1], a)
+            for(var i = 0; i < 3; i++) {
+                document.write("b["+i+"] = " + b[i] + " ")
+            }
+
+            function func1(i) {
+                i = i + 1
+            }
+
+            function func2(i) {
+                i = i + 2
+                return i
+            }
+
+            function func3(i, j) {
+                i = i + 3; j[0] = j[0] + 4
+            }
+
+            function func4(i, j) {
+                i = i + 3; j[0] = j[0] + 4
+                return j
+            }
+
+            /* Output:
+            Test Call by Value
+            m = 1
+            n = 3
+            Test Array to Subprograms
+            a[0] = 14 a[1] = 20 a[2] = 30
+            b[0] = 18 b[1] = 20 b[2] = 30
+            */
+        </script>
+    </body>
+</html>

@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <title>JavaScript Test Selections</title>
+    </head>
+    <body>
+        <script type="text/javascript">
+            // Test Selections:      if, if-else, nested if-else
+            // Logical Operators:    &&, ||, !
+            // Relational Operators: <, >, ==, >=, <=, !=
+            // Program-ID:  TSel.html
+            // Author:      Tyler Oalman
+            var i1 = 1, i2 = 2, i3 = 3, i4 = 4, i5 = 5, i6 = 6
+
+            // Test a simple if
+            if (i4 > i1) document.write("i4 > i1 <br/>")
+
+            // Test if-else
+            if ((i5 < i2) && (i3 >= i2))
+                document.write("(i5 < i2) && (i3 >= i2) <br/>")
+            else
+                document.write("(i5 >= i2) || (i3 < i2) <br/>")
+
+            // Test nested if-else
+            if (i1 != i2)
+                document.write("(i1 != i2) <br/>")
+            else
+                if ((i4 == i5) || (i5 != i6))
+                    document.write("(i1 == i2) && ((i4 == i5) || (i5 != i6) <br/>")
+
+            /* Output:
+                i4 > i1
+                (i5 >= i2) || (i3 < i2)
+                (i1 != i2)
+            */
+        </script>
+    </body>
+</html>
