@@ -201,6 +201,11 @@ function newGame() {
     dealerDraw();
     dealerDraw();
     
+    // Have the player automatically win if they start off with a blackjack
+    if (player.score == 21) {
+        endGame();
+    }
+    
     // Prevent the game from ending immediately 
     if (numCardsPulled > 4) {
         endGame();
