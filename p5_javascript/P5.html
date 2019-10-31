@@ -1,27 +1,43 @@
 <doctype html>
     <html>
-     <body>
-        <!-- Title --> 
-        <h1>Blackjack</h1><br>
-         Cards:
-         <div id="dealer-cards"></div>
-         <br>
-         <div id="player-cards"></div>
-         <br>
-         <!-- New Game Button -->
-         <input type='button' id='new-game-button' value='New Game' onclick='newGame();'/>
-         <!-- Hit Button -->
-         <input type='button' id='hit-button' value='Hit' onclick='hit();'/>
-         <!-- Stand Button -->
-         <input type='button' id='stand-button' value='Stand' onclick='stand();'/>
-         <br>
-         <br>
-         <!-- Score -->
-         Score:
-         <div id="player-score"></div>
-         <div id="dealer-score"></div>
-         <br>
-         <h2 id="message-board"></h2>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+    </head> 
+    <body>
+        <div class="jumbotron text-center">
+            <!-- Title --> 
+            <h1 class="animated infinite pulse">Blackjack</h1><br>
+                Cards:
+            <div id="dealer-cards"></div>
+                <br>
+                
+                <div id="player-cards"></div>
+                
+                <br>
+                
+                <!-- New Game Button -->
+                <button type="button" class="btn btn-primary" id='new-game-button' onclick='newGame();'>New Game</button>
+                
+                <!-- Hit Button -->
+                <button type="button" class="btn btn-success" id='hit-button' onclick='hit()'>Hit</button>
+                
+                <!-- Stand Button -->
+                <button type="button" class="btn btn-danger" id='stand-button' onclick='stand();'>Stand</button>
+                
+                <br>
+                <br>
+                
+                <!-- Score -->
+                <div id="player-score"></div>
+                <div id="dealer-score"></div>
+                
+                <br>
+                
+                <!-- Display Win or Lose Messages -->
+                <h2 id="message-board"></h2>
+            </div>
+        </div>
          <script>
             var numCardsPulled = 0;
 
@@ -118,42 +134,59 @@ function resetGame() {
 // Function that determines how the game ends
 function endGame() {
     if (player.score === 21) {
-        document.getElementById("message-board").innerHTML = "You win! You got blackjack." + "<br>" + "click New Game to play again";
+        document.getElementById("message-board").innerHTML = "You win! You got blackjack." + "<br>" + "Click New Game to play again";
+        document.getElementById("dealer-cards").innerHTML = "Dealer Cards: " + getDealerCardUI(dealer.cards);
         resetGame();
     }
     if (player.score > 21) {
-        document.getElementById("message-board").innerHTML = "You went over 21! The dealer wins" + "<br>" + "click New Game to play again";
+        document.getElementById("message-board").innerHTML = "You went over 21! The dealer wins" + "<br>" + "Click New Game to play again";
+        document.getElementById("dealer-cards").innerHTML = "Dealer Cards: " + getDealerCardUI(dealer.cards);
         resetGame();
     }
     if (dealer.score === 21) {
-        document.getElementById("message-board").innerHTML = "You lost. Dealer got blackjack" + "<br>" + "click New Game to play again";
+        document.getElementById("message-board").innerHTML = "You lost. Dealer got blackjack" + "<br>" + "Click New Game to play again";
+        document.getElementById("dealer-cards").innerHTML = "Dealer Cards: " + getDealerCardUI(dealer.cards);
         resetGame();
     }
     if (dealer.score > 21) {
-        document.getElementById("message-board").innerHTML = "Dealer went over 21! You win!" + "<br>" + "click New Game to play again";
+        document.getElementById("message-board").innerHTML = "Dealer went over 21! You win!" + "<br>" + "Click New Game to play again";
+        document.getElementById("dealer-cards").innerHTML = "Dealer Cards: " + getDealerCardUI(dealer.cards);
         resetGame();
     }
     if (dealer.score >= 17 && player.score > dealer.score && player.score < 21) {
-        document.getElementById("message-board").innerHTML = "You win! You beat the dealer." + "<br>" + "click New Game to play again";
+        document.getElementById("message-board").innerHTML = "You win! You beat the dealer." + "<br>" + "Click New Game to play again";
+        document.getElementById("dealer-cards").innerHTML = "Dealer Cards: " + getDealerCardUI(dealer.cards);
         resetGame();
     }
     if (dealer.score >= 17 && player.score < dealer.score && dealer.score < 21) {
-        document.getElementById("message-board").innerHTML = "You lost. Dealer had the higher score." + "<br>" + "click New Game to play again";
+        document.getElementById("message-board").innerHTML = "You lost. Dealer had the higher score." + "<br>" + "Click New Game to play again";
+        document.getElementById("dealer-cards").innerHTML = "Dealer Cards: " + getDealerCardUI(dealer.cards);
         resetGame();
     }
     if (dealer.score >= 17 && player.score === dealer.score && dealer.score < 21) {
-        document.getElementById("message-board").innerHTML = "You tied! " + "<br>" + "click New Game to play again";
+        document.getElementById("message-board").innerHTML = "You tied! " + "<br>" + "Click New Game to play again";
+        document.getElementById("dealer-cards").innerHTML = "Dealer Cards: " + getDealerCardUI(dealer.cards);
         resetGame();
     }
 }
 
 // Function where the dealer will draw
 function dealerDraw() {
-    
     dealer.cards.push(deck.deckArray[numCardsPulled]);
     dealer.score = getCardsValue(dealer.cards);
-    document.getElementById("dealer-cards").innerHTML = "Dealer Cards: " + getDealerCardUI(dealer.cards);
-    document.getElementById("dealer-score").innerHTML = "Dealer Score: " + dealer.score;
+    
+    // Display the back of the card so that player cannot see dealer's whole hand
+    if (dealer.cards.length == 2) {
+        getDealerCardUI(dealer.cards);
+        dealer.hand[1] = "<img src=\"./cards/back.png\">"
+        document.getElementById("dealer-cards").innerHTML = "Dealer Cards: " + dealer.hand;
+       
+    }
+    // Reveal all of dealer's hand
+    else { 
+        document.getElementById("dealer-cards").innerHTML = "Dealer Cards: " + getDealerCardUI(dealer.cards);
+    }
+    
     numCardsPulled += 1;
 }
 
@@ -166,7 +199,12 @@ function newGame() {
     hit();
     hit();
     dealerDraw();
-    endGame();
+    dealerDraw();
+    
+    // Prevent the game from ending immediately 
+    if (numCardsPulled > 4) {
+        endGame();
+    }
 }
 
 // Function that handles the hit button
@@ -517,6 +555,9 @@ function stand() {
     endGame();
 }
          </script>
+         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     </body>
        
     </html>
