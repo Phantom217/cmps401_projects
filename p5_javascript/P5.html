@@ -126,6 +126,7 @@ function resetGame() {
     dealer.score = 0;
     deck.initialize();
     deck.shuffle();
+
     document.getElementById("hit-button").disabled = true;
     document.getElementById("stand-button").disabled = true;
     document.getElementById("new-game-button").disabled = false;
@@ -207,9 +208,9 @@ function newGame() {
     }
     
     // Prevent the game from ending immediately 
-    if (numCardsPulled > 4) {
+    /*if (numCardsPulled > 4) {
         endGame();
-    }
+    }*/
 }
 
 // Function that handles the hit button
@@ -219,9 +220,12 @@ function hit() {
     document.getElementById("player-cards").innerHTML = "Player Cards: " + getPlayerCardUI(player.cards);
     document.getElementById("player-score").innerHTML = "Player Score: " + player.score;
     numCardsPulled += 1;
-    if (numCardsPulled > 2) {
+    if (player.score >= 21) {
         endGame();
     }
+    /*if (numCardsPulled > 2) {
+        endGame();
+    }*/
 }
 
 // Function that gets the pictures of the player's hand
