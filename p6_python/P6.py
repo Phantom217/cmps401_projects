@@ -3,8 +3,7 @@ import zipfile
 
 Z = zipfile.ZipFile(sys.argv[1])
 FILELIST = Z.namelist()
-fOut = open("output.txt", "w")
-F = []
+OUT = open("output.txt", "w")
 COMMON = []
 
 for i, x in enumerate(FILELIST):
@@ -17,7 +16,7 @@ for i, x in enumerate(FILELIST):
 
 for line in COMMON:
     print(line.decode('utf-8'))
-    fOut.write(line.decode('utf-8'))
+    OUT.write(line.decode('utf-8'))
 
 Z.close()
-fOut.close()
+OUT.close()
